@@ -1,1 +1,2 @@
-commandIQ_venv
+command_venv
+.env
