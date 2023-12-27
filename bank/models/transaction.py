@@ -14,3 +14,6 @@ class Transaction(BaseModel):
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     transaction_type = models.CharField(max_length=10, choices=[('deposit', 'Deposit'), ('withdrawal', 'Withdrawal'),
                                                                 ('transfer', 'Transfer')])
+
+    def __str__(self):
+        return f"{self.transaction_type} of {self.amount} on {self.timestamp}"
