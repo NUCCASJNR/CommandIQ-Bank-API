@@ -32,7 +32,7 @@ class BaseModel(models.Model):
     def get_all(cls):
         """Get all objs of a cls"""
         return cls.objects.all()
-
+    
     @classmethod
     def custom_delete(cls, **kwargs: Dict[str, Any]):
         """

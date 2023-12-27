@@ -2,12 +2,12 @@
 
 """Contains user model."""
 
-from bank.models.base_model import BaseModel
+from bank.models.base_model import BaseModel, models
 from django.contrib.auth.models import AbstractUser, Group, Permission
 
 
 def user_profile_image_path(instance, filename):
-    # file will be uploaded to MEDIA_ROOT/user_profile_images/<user_id>/<filename>
+    # file will be uploaded to MEDIA_ROOT/profile_images/<user_id>/<filename>
     return f'profile_images/{instance.id}/{filename}'
 
 
