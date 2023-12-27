@@ -2,18 +2,18 @@
 
 """Base model"""
 
-from datetime import datetime
 from django.db import models
 from typing import Any, Dict, Optional, List, Union
+from django.utils import timezone
 from uuid import uuid4
 
 
 class BaseModel(models.Model):
     """Base model for CrowdFunding
-    Every other classes inherits from  this class
+    Every other class inherits from this class
     """
     id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
-    created_at = models.DateTimeField(default=datetime.now, editable=False)
+    created_at = models.DateTimeField(default=timezone.now, editable=False)
     updated_at = models.DateTimeField(auto_now=True, editable=False)
 
     class Meta:
@@ -32,7 +32,7 @@ class BaseModel(models.Model):
     def get_all(cls):
         """Get all objs of a cls"""
         return cls.objects.all()
-    
+
     @classmethod
     def custom_delete(cls, **kwargs: Dict[str, Any]):
         """
