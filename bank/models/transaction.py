@@ -16,4 +16,4 @@ class Transaction(BaseModel):
                                                                 ('transfer', 'Transfer')])
 
     def __str__(self):
-        return f"{self.transaction_type} of {self.amount} on {self.timestamp}"
+        return f"{self.transaction_type} of {self.amount} on {self.created_at}"
