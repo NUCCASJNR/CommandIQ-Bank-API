@@ -14,5 +14,8 @@ class Account(BaseModel):
     account_name = models.CharField(blank=False, max_length=100)
     balance = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
 
+    class Meta:
+        db_table = 'accounts'
+
     def __str__(self):
         return f"{self.account_name} ({self.account_number}) - {self.user.username}"
