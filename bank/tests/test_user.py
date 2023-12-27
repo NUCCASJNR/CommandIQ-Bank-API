@@ -19,3 +19,22 @@ class CreateUserTest(TestCase):
         user = User.custom_save(**user_dict)
         self.assertEqual(user.username, user_dict['username'])
         self.assertEqual(user.email, user_dict['email'])
+        print(User.find_obj_by(**{'username': 'Al-Areef'}))
+
+    def test_update_user(self):
+        user = User.find_obj_by(**{'username': 'Al-Areef'})
+        try:
+            User.custom_update(**{'username': user},  **{'password': 'idanre123@', 'email': 'al@gmail.com'})
+            print(user)
+        except Exception as e:
+            print(str(e))
+        self.assertEqual(User.to_dict(user)['email'], 'al@gmail.com')
+
+    def test_delete_user(self):
+        try:
+            user = User.find_obj_by(**{'username': 'Al-Areef'})
+            self.assertNotIsInstance(user, User)
+            User.custom_delete(**{'username': user})
+        except Exception as e:
+            print(str(e))
+        self.assertNotIsInstance(user, User)
