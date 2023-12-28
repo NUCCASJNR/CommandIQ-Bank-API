@@ -1,0 +1,10 @@
+POST http://127.0.0.1:8000/auth/signup/
+content-type: application/json
+
+{
+    "username": "Al-Areef",
+    "password": "testmode23",
+    "email": "al@gmail.com",
+   "first_name": "Al-Areef",
+  "last_name": "Adegbite"
+}

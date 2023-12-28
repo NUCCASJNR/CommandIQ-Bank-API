@@ -70,7 +70,7 @@ class BaseModel(models.Model):
         on the kwargs
         """
         try:
-            instance = cls.objects.get(**kwargs)
+            instance = cls.objects.filter(**kwargs).first()
             return instance
         except cls.DoesNotExist:
             return "No such instance"
