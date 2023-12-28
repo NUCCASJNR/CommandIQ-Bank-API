@@ -5,7 +5,7 @@
 from rest_framework import generics, status
 from rest_framework.response import Response
 from bank.models.user import User
-from bank.serializers.user import UserSerializer
+from bank.serializers.signup import UserSerializer
 
 
 class UserRegistrationView(generics.CreateAPIView):
