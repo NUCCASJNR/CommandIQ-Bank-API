@@ -2,9 +2,9 @@ POST http://127.0.0.1:8000/auth/signup/
 content-type: application/json
 
 {
-    "username": "Al-Areef",
+    "username": "NUCCASJNR",
     "password": "testmode23",
-    "email": "alareefadegbite@gmail.com",
+    "email": "adegbitealareef28@yahoo.com",
    "first_name": "Al-Areef",
   "last_name": "Adegbite"
 }

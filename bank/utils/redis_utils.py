@@ -65,9 +65,15 @@ class RedisClient:
         except redis.RedisError as e:
             print(f"Error deleting key '{key}' from Redis: {e}")
 
-    def generate_key_name(self, obj) -> object:
+    def filter_delete_keys(self, query):
         """
-        Generates a key name for redis
-        @param obj: The object to generate key name for
+        Deletes keys from redis that match a filter
+        @param query: The filter to match
         """
-        return f"{obj.__class__.__name__}:{obj.id}"
+        try:
+            keys = self.redis_clien.scan_iter(query)
+            for key in keys:
+                self.redis_client.delete(key)
+            return True
+        except redis.RedisError as e:
+            print(f"Error deleting keys from Redis: {e}")
