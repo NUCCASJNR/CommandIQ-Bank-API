@@ -8,6 +8,9 @@ from django.conf import settings
 from os import getenv
 from bank.utils.redis_utils import RedisClient
 from bank.models.user import User
+import random
+import string
+import requests
 
 
 API_KEY = getenv("ELASTIC_EMAIL_API_KEY")
@@ -28,9 +31,11 @@ class EmailUtils:
         Sends a verification email to the user
         """
         verification_code = EmailUtils.generate_verification_code()
+        redis_client = RedisClient()
+        key = f'user:{user.id}:{verification_code}'
+        redis_client.set_key(key, verification_code, expiry=30)
         user.verified = False
         user.verification_code = verification_code
-        user.save()
         url = "https://api.elasticemail.com/v2/email/send"
         payload = {
             "apikey": API_KEY,
@@ -38,11 +43,16 @@ class EmailUtils:
             "from": "community-catalyst@polyglotte.tech",
             "to": user.email,
             "bodyHtml": f"Hello {user.username},<br> Your verification code is {verification_code}",
+            "isTransactional": False
         }
-        redis_client = RedisClient()
-        redis_client.set(user.email, verification_code, expiry=30)
-        response = requests.post(url, data=payload)
-        if response.status_code == 200:
-            print(f'Verification code sent to {user.email}')
-        else:
-            print(f'Elastic email error: {response.text}')
+        try:
+            response = requests.post(url, data=payload)
+            if response.status_code == 200:
+                print(f'Verification email sent to {user.email}')
+                return True
+            else:
+                print(f'Error sending verification email to {user.email}')
+                return False
+        except Exception as e:
+            print(f'Error sending verification email to {user.email}: {e}')
+            return False
