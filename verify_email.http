@@ -1,0 +1,7 @@
+POST http://127.0.0.1:8000/auth/verify_email/
+content-type: application/json
+
+{
+  "verification_code": 839702,
+  "user_id": "3f161a85-5ffa-49b0-a2f0-a32e512a4b76"
+}

@@ -3,9 +3,10 @@
 """Contains urls for the bank app"""
 
 from django.urls import path
-from bank.views.signup import UserRegistrationView
+from bank.views.signup import UserRegistrationView, UserVerificationView
 
 urlpatterns = [
     path('auth/signup/', UserRegistrationView.as_view(), name='signup'),
+    path('auth/verify_email/', UserVerificationView.as_view(), name='verify_email')
 ]
 

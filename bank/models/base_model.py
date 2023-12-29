@@ -29,6 +29,11 @@ class BaseModel(models.Model):
         return instance
 
     @classmethod
+    def custom_get(cls, **kwargs):
+        instance = cls.objects.get(**kwargs)
+        return instance
+
+    @classmethod
     def get_all(cls):
         """Get all objs of a cls"""
         return cls.objects.all()
