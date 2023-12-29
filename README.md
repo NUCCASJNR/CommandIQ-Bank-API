@@ -37,3 +37,39 @@ and financial data.___
     ELASTIC_EMAIL_KEY="Your Elastic email API key"
     ```
     
+- **Create tables**
+  - ```python
+    python3 manage.py makemigrations
+    python3 manage.py migrate
+    ```
+
+# API Endpoint Documentation
+
+## Authentication-related Views
+
+### User Registration
+
+#### Endpoint Details
+
+- **View:** user_registration_view
+- **URL:** /auth/register/
+- **Method:** POST
+- **Description:** Registers a new user.
+
+#### Request
+
+- **HTTP Method:** POST
+- **URL:** /api/auth/register/
+- **Headers:**
+  - Content-Type: application/json
+
+- **Request Body:**
+  ```json
+  {
+    "username": "example_user",
+    "email": "user@example.com",
+    "password": "strong_password",
+    "first_name": "firstname",
+    "last_name": "LastName"
+  }
+~~~~
