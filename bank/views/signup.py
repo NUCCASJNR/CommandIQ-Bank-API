@@ -9,6 +9,7 @@ from bank.serializers.signup import UserSerializer
 from bank.utils.email_utils import EmailUtils
 from django.shortcuts import redirect
 from rest_framework.views import APIView
+from django.core.exceptions import ObjectDoesNotExist
 
 
 class UserRegistrationView(generics.CreateAPIView):
@@ -51,7 +52,7 @@ class UserRegistrationView(generics.CreateAPIView):
             verification_code = EmailUtils.generate_verification_code()
 
             # Create the user
-            user = User.custom_save(verification_code=verification_code, verified=False, **serializer.validated_data)
+            user = User.custom_save(**serializer.validated_data)
 
             # Send the verification email
             EmailUtils.send_verification_email(user)

@@ -71,7 +71,7 @@ class RedisClient:
         @param query: The filter to match
         """
         try:
-            keys = self.redis_clien.scan_iter(query)
+            keys = self.redis_client.scan_iter(match=query)
             for key in keys:
                 self.redis_client.delete(key)
             return True
