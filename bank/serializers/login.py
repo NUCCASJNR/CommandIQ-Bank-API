@@ -9,7 +9,7 @@ class AuthTokenSerializer(serializers.Serializer):
     Serializer for obtaining an authentication token.
     """
     username = serializers.CharField(label="Username")
-    password = serializers.CharField(label="Password", style={'input_type': 'password'}, trim_whitespace=False)
+    password = serializers.CharField(label="Password", style={'input_type': 'password'})
 
     def validate(self, attrs):
         """
@@ -23,7 +23,6 @@ class AuthTokenSerializer(serializers.Serializer):
             if user:
                 if user.check_password(password):
                     if user.verified:
-                        attrs['user'] = user
                         return attrs
                     else:
                         msg = 'Account not verified'

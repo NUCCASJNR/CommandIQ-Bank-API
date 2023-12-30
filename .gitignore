@@ -1,3 +1,15 @@
 command_venv
 .env
 db.sqlite3
+models/__pycache__
+.idea/
+__pycache__/
+*.py[cod]
+.mypy_cache/
+bank/__pycache__
+bank/migrations/__pycache__
+bank/models/__pycache__
+bank/tests/__pycache__
+bank/serializers/__pycache__
+bank/views/__pycache__
+bank/utils/__pycache__
