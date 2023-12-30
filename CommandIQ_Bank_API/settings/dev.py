@@ -79,7 +79,10 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'CommandIQ_Bank_API.wsgi.application'
-
+AUTHENTICATION_BACKENDS = [
+    'bank.utils.auth.EmailOrUsernameModelBackend',
+    'django.contrib.auth.backends.ModelBackend',
+]
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
