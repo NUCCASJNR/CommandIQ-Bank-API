@@ -37,13 +37,13 @@ class EmailUtils:
         redis_client = RedisClient()
         key = f'user_id:{user.id}:{verification_code}'
         redis_client.set_key(key, verification_code, expiry=30)
-        user.verified = False
-        user.verification_code = verification_code
-        user.save()
+        # user.verified = False
+        # user.verification_code = verification_code
+        # user.save()
         url = "https://api.elasticemail.com/v2/email/send"
         request_payload = {
             "apikey": API_KEY,
-            "from": "alareefadegbite@gmail.com",
+            "from": "commandiq-bank-api@polyglotte.tech",
             "to": user.email,
             "subject": "Verify your account",
             "bodyHtml": f"Hello {user.username},<br> Your verification code is: {verification_code}",
@@ -52,7 +52,7 @@ class EmailUtils:
         try:
             response = requests.post(url, data=request_payload)
             if response.status_code == 200:
-                print(response.json())
+                print(f'Email Succesfully sent to {user.email}')
                 return True
             else:
                 print(f'Error sending verification email to {user.email}')

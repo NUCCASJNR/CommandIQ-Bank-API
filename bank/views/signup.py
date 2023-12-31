@@ -31,6 +31,7 @@ class UserRegistrationView(generics.CreateAPIView):
 
         username = serializer.validated_data['username']
         email = serializer.validated_data['email']
+        print(serializer.validated_data)
 
         # Check if username or email already exists
         existing_user = User.find_obj_by(username=username)
@@ -60,7 +61,8 @@ class UserRegistrationView(generics.CreateAPIView):
             response_data = {
                 "message": "User registered successfully. Check your email for the verification code.",
                 "username": User.to_dict(user)['username'],
-                "email": User.to_dict(user)['email']
+                "email": User.to_dict(user)['email'],
+                "password": User.to_dict(user)['password']
             }
             return Response(response_data, status=status.HTTP_201_CREATED)
         except Exception as e:

@@ -13,3 +13,4 @@ bank/tests/__pycache__
 bank/serializers/__pycache__
 bank/views/__pycache__
 bank/utils/__pycache__
+extensions.json

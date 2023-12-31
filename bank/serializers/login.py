@@ -2,37 +2,39 @@
 
 from rest_framework import serializers
 from bank.models.user import User
+from django.core.exceptions import ObjectDoesNotExist
 
 
 class AuthTokenSerializer(serializers.Serializer):
     """
     Serializer for obtaining an authentication token.
     """
-    username = serializers.CharField(label="Username")
-    password = serializers.CharField(label="Password", style={'input_type': 'password'})
 
-    def validate(self, attrs):
+    username = serializers.CharField()
+    password = serializers.CharField(write_only=True, style={'input_type': 'password'})
+
+    class Meta:
+        model = User
+        fields = ['username', 'password', 'id', 'created_at', 'updated_at']
+        read_only_fields = ('id', 'created_at', 'updated_at')
+
+    def validate(self, data):
         """
         Validate and authenticate the user.
         """
-        username = attrs.get('username')
-        password = attrs.get('password')
+        username = data['username']
+        password = data['password']
 
-        if username and password:
-            user = User.find_obj_by(**{'username': username})
-            if user:
-                if user.check_password(password):
-                    if user.verified:
-                        return attrs
-                    else:
-                        msg = 'Account not verified'
-                        raise serializers.ValidationError(msg)
-                else:
-                    msg = 'Incorrect password'
-                    raise serializers.ValidationError(msg)
+        try:
+            if '@' in username:
+                user = User.find_obj_by(email=username)
             else:
-                msg = 'User not found'
-                raise serializers.ValidationError(msg)
-        else:
-            msg = 'Must include "username" and "password"'
-            raise serializers.ValidationError(msg)
+                user = User.find_obj_by(username=username)
+
+            if user and user.check_password(password):
+                return user
+            else:
+                raise serializers.ValidationError('Invalid username or password')
+
+        except ObjectDoesNotExist:
+            raise serializers.ValidationError('User not found')

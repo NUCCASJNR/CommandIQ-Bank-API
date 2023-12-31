@@ -79,11 +79,12 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'CommandIQ_Bank_API.wsgi.application'
-AUTHENTICATION_BACKENDS = (
-    'django.contrib.auth.backends.ModelBackend',
-    'rest_framework.authentication.TokenAuthentication',
+
+AUTHENTICATION_BACKENDS = [
     'bank.utils.auth.EmailOrUsernameModelBackend'
-)
+    # 'django.contrib.auth.backends.ModelBackend',
+    'rest_framework.authentication.TokenAuthentication',
+]
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
@@ -97,7 +98,13 @@ DATABASES = {
         'PORT': '3306',
     }
 }
-
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+        # Other authentication classes if needed
+    ],
+    # Other REST framework settings
+}
 
 AUTH_USER_MODEL = 'bank.User'
 # Password validation
