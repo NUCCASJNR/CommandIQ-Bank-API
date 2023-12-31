@@ -10,11 +10,13 @@ from rest_framework.decorators import action
 from django.contrib.auth import authenticate
 from bank.models.user import User
 from bank.serializers.login import AuthTokenSerializer
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
 
 
 class LoginView(APIView):
     """API View for login"""
-    
+
     def post(self, request, *args, **kwargs):
         """
         Handles Post request for login
@@ -49,51 +51,23 @@ class LoginView(APIView):
             }, status=status.HTTP_401_UNAUTHORIZED)
 
 
-# #!/usr/bin/env python3
+class LogoutView(APIView):
+    """
+    Logout view to invalidate the user's authentication token.
+    """
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
-# """Contains Login view"""
+    def post(self, request, *args, **kwargs):
+        """
+        Handles POST request for user logout.
+        """
+        # Get the user's authentication token
+        auth_token = request.auth
 
-# from rest_framework import status, viewsets
-# from rest_framework.response import Response
-# from rest_framework.authtoken.models import Token
-# from rest_framework.decorators import action
-# from django.contrib.auth import authenticate
-# from bank.models.user import User
-# from bank.serializers.login import AuthTokenSerializer
-
-
-# class LoginViewSet(viewsets.ModelViewSet):
-#     """
-#     Viewset for user login
-#     """
-#     queryset = User.objects.all()
-#     serializer_class = AuthTokenSerializer
-
-#     @action(methods=['POST'], detail=False)
-#     def login(self, request):
-#         """
-#         Login user
-#         """
-#         serializer = AuthTokenSerializer(data=request.data)
-#         serializer.is_valid(raise_exception=True)
-#         print(request.data)
-#         if not serializer.is_valid():
-#             user = authenticate(
-#                 username=serializer.validated_data['username'],
-#                 password=serializer.validated_data['password']
-#             )
-#             print(User.to_dict(user))
-#             if user:
-#                 token, created = Token.objects.get_or_create(user=user)
-#                 return Response({
-#                     'message': 'Login successful',
-#                     'token': token.key,
-#                 }, status=status.HTTP_200_OK)
-#             else:
-#                 return Response({
-#                     'message': 'Invalid credentials'
-#                 }, status=status.HTTP_401_UNAUTHORIZED)
-#         else:
-#             return Response({
-#                 'message': 'Invalid serializers'
-#             }, status=status.HTTP_400_BAD_REQUEST)
+        if auth_token:
+            # Delete the user's authentication token
+            auth_token.delete()
+            return Response({"detail": "Logout successful"}, status=status.HTTP_200_OK)
+        else:
+            return Response({"detail": "User not authenticated"}, status=status.HTTP_401_UNAUTHORIZED)

@@ -56,20 +56,17 @@ and financial data.___
 - **Method:** POST
 - **Description:** Registers a new user.
 
-#### Request
+### This endpoint is used to sign up a new user. The request should be sent as an HTTP POST to the specified URL. The request body should be of form-data type and include the following parameters:
+- **email (text)**: The email address of the user.
+- **username (text)**: The desired username for the user. 
+- **password (text)**: The password for the user account. 
+- **last_name (text)**: The last name of the user. 
+- **first_name (text)**: The first name of the user.
 
-- **HTTP Method:** POST
-- **URL:** /api/auth/register/
-- **Headers:**
-  - Content-Type: application/json
+#### The response to the request will have a status code of 201, indicating that the request was successful. The response will include the following fields:
+- **message**: A message indicating the result of the signup process. 
+- **username**: The username of the newly signed up user. 
+- **email**: The email address of the newly signed up user.
 
-- **Request Body:**
-  ```json
-  {
-    "username": "example_user",
-    "email": "user@example.com",
-    "password": "strong_password",
-    "first_name": "firstname",
-    "last_name": "LastName"
-  }
-~~~~
+
+
