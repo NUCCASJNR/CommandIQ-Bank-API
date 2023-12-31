@@ -29,11 +29,11 @@ class EmailUtils:
         return verification_code
 
     @staticmethod
-    def send_verification_email(user: User):
+    def send_verification_email(user: User, verification_code: int):
         """
         Sends a verification email to the user
         """
-        verification_code = EmailUtils.generate_verification_code()
+        # verification_code = EmailUtils.generate_verification_code()
         redis_client = RedisClient()
         key = f'user_id:{user.id}:{verification_code}'
         redis_client.set_key(key, verification_code, expiry=30)
@@ -43,16 +43,16 @@ class EmailUtils:
         url = "https://api.elasticemail.com/v2/email/send"
         request_payload = {
             "apikey": API_KEY,
-            "from": "commandiq-bank-api@polyglotte.tech",
+            "from": getenv("EMAIL_SENDER"),
             "to": user.email,
             "subject": "Verify your account",
-            "bodyHtml": f"Hello {user.username},<br> Your verification code is: {verification_code}",
+            "bodyHtml": f"Hello {user.username},<br> Your verification code is: {verification_code}</br>",
             "isTransactional": False
         }
         try:
             response = requests.post(url, data=request_payload)
             if response.status_code == 200:
-                print(f'Email Succesfully sent to {user.email}')
+                print(f'Email Successfully sent to {user.email}')
                 return True
             else:
                 print(f'Error sending verification email to {user.email}')

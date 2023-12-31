@@ -53,16 +53,15 @@ class UserRegistrationView(generics.CreateAPIView):
             verification_code = EmailUtils.generate_verification_code()
 
             # Create the user
-            user = User.custom_save(**serializer.validated_data)
+            user = User.custom_save(**serializer.validated_data, verification_code=verification_code)
 
             # Send the verification email
-            EmailUtils.send_verification_email(user)
+            EmailUtils.send_verification_email(user, verification_code)
 
             response_data = {
                 "message": "User registered successfully. Check your email for the verification code.",
                 "username": User.to_dict(user)['username'],
-                "email": User.to_dict(user)['email'],
-                "password": User.to_dict(user)['password']
+                "email": User.to_dict(user)['email']
             }
             return Response(response_data, status=status.HTTP_201_CREATED)
         except Exception as e:

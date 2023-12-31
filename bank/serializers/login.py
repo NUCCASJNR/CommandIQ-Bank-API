@@ -24,6 +24,7 @@ class AuthTokenSerializer(serializers.Serializer):
         """
         username = data['username']
         password = data['password']
+        print(data)
 
         try:
             if '@' in username:
@@ -32,7 +33,8 @@ class AuthTokenSerializer(serializers.Serializer):
                 user = User.find_obj_by(username=username)
 
             if user and user.check_password(password):
-                return user
+                data['user'] = user
+                return data
             else:
                 raise serializers.ValidationError('Invalid username or password')
 
