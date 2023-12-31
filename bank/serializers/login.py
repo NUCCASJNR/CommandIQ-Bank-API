@@ -24,8 +24,6 @@ class AuthTokenSerializer(serializers.Serializer):
         """
         username = data['username']
         password = data['password']
-        print(data)
-
         try:
             if '@' in username:
                 user = User.find_obj_by(email=username)
@@ -38,5 +36,34 @@ class AuthTokenSerializer(serializers.Serializer):
             else:
                 raise serializers.ValidationError('Invalid username or password')
 
+        except ObjectDoesNotExist:
+            raise serializers.ValidationError('User not found')
+
+
+class ResetPasswordSerializer(serializers.Serializer):
+    """
+    Serializer for Handling resetting a user password
+    """
+
+    class Meta:
+        model = User
+        fields = ['username']
+        read_only_fields = ('id', 'created_at', 'updated_at')
+
+    def validate(self, data):
+        """
+        Validate a username or email first before sending the reset password token to the user
+        email address
+        :param data: username or email provided
+        :return: The user obj
+        """
+        username = data['username']
+        try:
+            if '@' in username:
+                user = User.find_obj_by(email=username)
+            else:
+                user = User.find_obj_by(username=username)
+            if user:
+                return user
         except ObjectDoesNotExist:
             raise serializers.ValidationError('User not found')

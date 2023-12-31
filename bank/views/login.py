@@ -71,3 +71,9 @@ class LogoutView(APIView):
             return Response({"detail": "Logout successful"}, status=status.HTTP_200_OK)
         else:
             return Response({"detail": "User not authenticated"}, status=status.HTTP_401_UNAUTHORIZED)
+
+
+class ResetPasswordView(APIView):
+    """
+    Reset password View for sending reset token to user
+    """

@@ -60,3 +60,32 @@ class EmailUtils:
         except Exception as e:
             print(f'Error sending verification email to {user.email}: {e}')
             return False
+
+    @staticmethod
+    def send_password_reset_email(user: User, reset_code: int):
+        """
+        Sends a password reset email to the user
+        """
+        redis_client = RedisClient()
+        key = f'user:{user.id}:reset_token:{reset_code}'
+        redis_client.set_key(key, reset_code, expiry=30)
+        url = "https://api.elasticemail.com/v2/email/send"
+        request_payload = {
+            "apikey": API_KEY,
+            "from": getenv("EMAIL_SENDER"),
+            "to": user.email,
+            "subject": "Reset your password",
+            "bodyHtml": f"Hello {user.username},<br> Your password reset code is: {reset_code}</br>",
+            "isTransactional": False
+        }
+        try:
+            response = requests.post(url, data=request_payload)
+            if response.status_code == 200:
+                print(f'Email Successfully sent to {user.email}')
+                return True
+            else:
+                print(f'Error sending password reset email to {user.email}')
+                return False
+        except Exception as e:
+            print(f'Error sending password reset email to {user.email}: {e}')
+            return False
