@@ -97,4 +97,4 @@ class ResetPasswordView(APIView):
             }
             return Response(response_data, status=status.HTTP_200_OK)
         except ObjectDoesNotExist:
-            return Response({"message": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"message": 'Incorrect Email Address or Username'}, status=status.HTTP_400_BAD_REQUEST)

@@ -65,7 +65,7 @@ class ResetPasswordSerializer(serializers.Serializer):
             else:
                 user = User.find_obj_by(username=username)
             if user:
-                data['user'] = user
                 return data
         except ObjectDoesNotExist:
             raise serializers.ValidationError('User not found')
+        return data
