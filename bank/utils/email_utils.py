@@ -62,7 +62,7 @@ class EmailUtils:
             return False
 
     @staticmethod
-    def send_password_reset_email(user: User, reset_code: int):
+    def send_password_reset_email(user: User, reset_code: int, email: str):
         """
         Sends a password reset email to the user
         """
@@ -73,7 +73,7 @@ class EmailUtils:
         request_payload = {
             "apikey": API_KEY,
             "from": getenv("EMAIL_SENDER"),
-            "to": user.email,
+            "to": email,
             "subject": "Reset your password",
             "bodyHtml": f"Hello {user.username},<br> Your password reset code is: {reset_code}</br>",
             "isTransactional": False

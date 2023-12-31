@@ -44,11 +44,12 @@ class ResetPasswordSerializer(serializers.Serializer):
     """
     Serializer for Handling resetting a user password
     """
+    username = serializers.CharField()
 
-    class Meta:
-        model = User
-        fields = ['username']
-        read_only_fields = ('id', 'created_at', 'updated_at')
+    # class Meta:
+    #     model = User
+    #     fields = ['username']
+    #     read_only_fields = ('id', 'created_at', 'updated_at')
 
     def validate(self, data):
         """
@@ -64,6 +65,7 @@ class ResetPasswordSerializer(serializers.Serializer):
             else:
                 user = User.find_obj_by(username=username)
             if user:
-                return user
+                data['user'] = user
+                return data
         except ObjectDoesNotExist:
             raise serializers.ValidationError('User not found')
