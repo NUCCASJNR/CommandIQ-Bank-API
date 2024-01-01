@@ -4,7 +4,8 @@
 
 from django.urls import path
 from bank.views.signup import UserRegistrationView, UserVerificationView
-from bank.views.login import LoginView, LogoutView, ResetPasswordView
+from bank.views.login import LoginView, LogoutView
+from bank.views.reset_password import ResetPasswordView
 
 urlpatterns = [
     path('auth/signup/', UserRegistrationView.as_view(), name='signup'),

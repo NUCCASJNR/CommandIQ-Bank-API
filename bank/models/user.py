@@ -22,6 +22,7 @@ class User(AbstractUser, BaseModel):
     profile_picture = models.ImageField(max_length=255, null=True, upload_to=user_profile_image_path)
     verification_code = models.CharField(max_length=50, blank=True, null=True)
     verified = models.BooleanField(default=False)
+    reset_token = models.CharField(max_length=16, blank=True)
 
     groups = models.ManyToManyField(Group, blank=True, related_name='bank_user_groups')
 

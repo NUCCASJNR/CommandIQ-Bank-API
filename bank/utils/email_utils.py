@@ -24,7 +24,7 @@ class EmailUtils:
         :param length: Length of the verification code (default is 6)
         :return: Random verification code
         """
-        charset = "0123456789"  # You can customize this to include letters or other characters if needed
+        charset = "0123456789"
         verification_code = ''.join(secrets.choice(charset) for _ in range(length))
         return verification_code
 
@@ -67,7 +67,7 @@ class EmailUtils:
         Sends a password reset email to the user
         """
         redis_client = RedisClient()
-        key = f'user:{user.id}:reset_token:{reset_code}'
+        key = f'reset_token:{user.id}:{reset_code}'
         redis_client.set_key(key, reset_code, expiry=30)
         url = "https://api.elasticemail.com/v2/email/send"
         request_payload = {
