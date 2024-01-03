@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from bank.models.user import User
 from bank.utils.redis_utils import RedisClient
+from django.core.exceptions import ObjectDoesNotExist
 
 
 class ResetPasswordSerializer(serializers.Serializer):
@@ -45,14 +46,22 @@ class ResetPasswordConfirmSerializer(serializers.Serializer):
         model = User
         fields = ['token', 'new_password']
 
-    # def validate(self, data):
-    #     """
-    #     Validate the reset password token and new password
-    #     """
-    #     token = data['token']
-    #     new_password = data['new_password']
-    #     if token and new_password:
-    #         try:
-    #             redis_client = RedisClient()
-    #             key = f'reset_token:{user.id}:{reset_code}'
-    #     return data
+    def validate(self, data):
+        """
+        Validate the reset password token and new password
+        """
+        token = data['token']
+        new_password = data['new_password']
+        if token and new_password:
+            try:
+                user = User.custom_get(**{'reset_token': token})
+                user_id = User.to_dict(user)['id']
+                redis_client = RedisClient()
+                key = f'reset_token:{user_id}:{token}'
+                value = redis_client.get_key(key)
+                if value:
+                    return data
+                return "Token Not Found"
+            except ObjectDoesNotExist:
+                raise serializers.ValidationError('Invalid reset token')
+        return data

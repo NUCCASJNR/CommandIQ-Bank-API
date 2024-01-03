@@ -6,6 +6,7 @@ from django.db import models
 from typing import Any, Dict, Optional, List, Union
 from django.utils import timezone
 from uuid import uuid4
+from django.contrib.auth.hashers import make_password
 
 
 class BaseModel(models.Model):
@@ -50,11 +51,16 @@ class BaseModel(models.Model):
     @classmethod
     def custom_update(cls, filter_kwargs: Dict[str, Any], update_kwargs: Dict[str, Any]):
         """
-        Updates an instance of the class based on the filter_kwargs and update_kwargs.
+        Updates instances of the class based on the filter_kwargs and update_kwargs.
         """
-        instance = cls.objects.filter(**filter_kwargs)
-        instance.update(**update_kwargs)
-        return cls.objects.get(**filter_kwargs)  # Return the updated instance
+        try:
+            if 'password' in update_kwargs and update_kwargs['password'] is not None:
+                update_kwargs['password'] = make_password(update_kwargs['password'])
+
+            cls.objects.filter(**filter_kwargs).update(**update_kwargs)
+            return True
+        except cls.DoesNotExist:
+            return False
 
     @classmethod
     def find_objs_by(cls, **kwargs: Dict[str, Any]):

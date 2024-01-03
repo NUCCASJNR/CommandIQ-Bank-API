@@ -14,3 +14,5 @@ bank/serializers/__pycache__
 bank/views/__pycache__
 bank/utils/__pycache__
 extensions.json
+.vscode
+reset_password.log

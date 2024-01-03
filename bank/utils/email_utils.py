@@ -64,7 +64,7 @@ class EmailUtils:
     @staticmethod
     def send_password_reset_email(user: User, reset_code: int, email: str):
         """
-        Sends a password reset email to the user
+        Sends a password-reset email to the user
         """
         redis_client = RedisClient()
         key = f'reset_token:{user.id}:{reset_code}'
