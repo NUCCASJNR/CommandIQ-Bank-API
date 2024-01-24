@@ -42,7 +42,7 @@ class ResetPasswordView(APIView):
             EmailUtils.send_password_reset_email(user, reset_token, user_email)
             logging.info(f'Reset token sent to user: {user_email} : {reset_token}')
             User.custom_update(filter_kwargs={'email': user_email}, update_kwargs={'reset_token': reset_token})
-            response_data = {
+            response_data = { 
                 "message": "Reset password token successfully sent",
                 "email": User.to_dict(user)['email']
             }

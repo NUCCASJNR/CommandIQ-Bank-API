@@ -5,8 +5,10 @@ charset-normalizer==3.3.2
 Django==4.0
 django-rest-framework==0.1.0
 djangorestframework==3.14.0
+gunicorn==21.2.0
 idna==3.6
 mysqlclient==2.2.1
+packaging==23.2
 Pillow==10.1.0
 python-dotenv==1.0.0
 pytz==2023.3.post1
